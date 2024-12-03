@@ -4,6 +4,7 @@ import connectDb from "./dbConnection/db.js";
 import express from "express";
 import cookieParser from 'cookie-parser';
 import route from './routes/user.route.js';
+import cors from "cors"
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -11,13 +12,18 @@ const port = process.env.PORT || 3000;
 connectDb();
 
 app.get("/",(req,res)=> {
-    res.send("sdfjasd fdsakjl fhdsfskh ")
+    res.send("serer run success fully")
 });
 
 // middlewaew
 app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+app.use(cors({
+    origin: "http://localhost:5173",
+    Credentials: true,
+    methods:["GET","POST"]
+}))
 
 
 // api

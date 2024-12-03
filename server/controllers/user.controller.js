@@ -5,14 +5,17 @@ import { genrateToken } from "../utils/genrateToken.js";
 export const register = async (req,res) => {
     try {
         const {name,email,password} = req.body;
+        console.log(name,email,password)
+
         if(!name || !email || !password){
              return res.status(400).json({
                 success:false,
                 message: "All fields are require"
              })
         };
-        const user = await User.findOne({email});
-        if(user){
+        const userFind = await User.findOne({email});
+        console.log(userFind)
+        if(userFind){
             return res.status(400).json({
                 success:false,
                 message:"User already with this email."
@@ -20,15 +23,17 @@ export const register = async (req,res) => {
         }
         const hashPassword = await bcrypt.hash(password,10);
 
-        await User.create({
+         const user =  await User.create({
             name,
             email,
             password:hashPassword
         });
+        console.log("this is data => ",user)
 
         return res.status(201).json({
             success:true,
-            message:"Account created successfully."
+            message:`welcome back ${user.name}.`,
+            user
         })
 
     } catch (error) {

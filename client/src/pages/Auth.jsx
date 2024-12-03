@@ -15,7 +15,10 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/ui/tabs"
-import { useState } from "react"
+import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi"
+import { Loader2 } from "lucide-react"
+import { useEffect, useState } from "react"
+import { toast } from "sonner"
 
 const Login = () => {
 
@@ -24,7 +27,14 @@ const Login = () => {
       email:"",
       password:""
   });
+  const [loginInput,setLoginInput] = useState({
+    email:"",
+    password:""
+});
 
+const [registerUser,{data:registerData,error:registerError,isLoading:registerLoading,isSuccess:registerSuccess}] = useRegisterUserMutation()
+const [loginUser,{data,error,isLoading,isSuccess}] = useLoginUserMutation()
+// signup 
   const singupHndlechange = (e) => {
     const name = e.target.name
     const value = e.target.value
@@ -34,18 +44,15 @@ const Login = () => {
      })
   };
 
-  const handleOnSubmit = (e) => {
+  const handleOnSubmit = async(e) => {
       e.preventDefault();
-      console.log(signupInput)
+      await registerUser(signupInput)
   };
 
 
   // login functionalty 
   
-  const [loginInput,setLoginInput] = useState({
-      email:"",
-      password:""
-  });
+  
 
   const loginHndlechange = (e) => {
     const name = e.target.name
@@ -55,12 +62,27 @@ const Login = () => {
      })
   };
 
-  const handleLoginOnSubmit = (e) => {
+  const handleLoginOnSubmit = async(e) => {
       e.preventDefault();
-      console.log(loginInput)
+      await loginUser(loginInput)
   };
 
+useEffect(()=>{
+  if(registerSuccess || registerData){
+      toast.success(registerData?.message, "Signup Successfully")
+  };
+  if(registerError){
+    console.log(registerError?.data?.message)
+      toast.error(registerError?.data?.message || "Signup failed")
+  };
 
+  if(isSuccess || data){
+      toast.success(data?.message, "Login Successfully")
+  };
+  if(error){
+    toast.error(data?.data?.message || "Login failed")
+};
+},[isLoading,error,data,registerData,registerError,registerLoading])
 
   return (
     <div className="flex items-center w-full justify-center">
@@ -95,7 +117,15 @@ const Login = () => {
           </CardContent>
 
           <CardFooter>
-            <Button type="submit">Signup</Button>
+          <Button disabled={registerLoading} type="submit">
+              {
+                registerLoading ? (
+                  <>
+                   <Loader2 className="mr-2 h-4 animate-spin"/> Please wail....
+                  </>
+                ) : "Signup"
+              }
+            </Button>
           </CardFooter>
             </form>
         </Card>
@@ -116,11 +146,19 @@ const Login = () => {
             </div>
             <div className="space-y-1">
               <Label className="float-left mb-3" htmlFor="new">Password</Label>
-              <Input id="new" name="password" value={loginInput.password} onChange={loginHndlechange} type="password" required="true"/>
+              <Input id="new" name="password" value={loginInput.password} onChange={loginHndlechange} type="password"/>
             </div>
           </CardContent>
           <CardFooter>
-            <Button>Login</Button>
+            <Button disabled={isLoading}>
+              {
+                isLoading ? (
+                  <>
+                   <Loader2 className="mr-2 h-4 animate-spin"/> Please wail....
+                  </>
+                ) : "Login"
+              }
+            </Button>
           </CardFooter>
           </form>
         </Card>
