@@ -18,10 +18,11 @@ import {
 import { useLoginUserMutation, useRegisterUserMutation } from "@/features/api/authApi"
 import { Loader2 } from "lucide-react"
 import { useEffect, useState } from "react"
+import { useNavigate } from "react-router-dom"
 import { toast } from "sonner"
 
 const Login = () => {
-
+  const navigate = useNavigate()
   const [signupInput,setSignupInput] = useState({
       name:"",
       email:"",
@@ -69,7 +70,8 @@ const [loginUser,{data,error,isLoading,isSuccess}] = useLoginUserMutation()
 
 useEffect(()=>{
   if(registerSuccess || registerData){
-      toast.success(registerData?.message, "Signup Successfully")
+      toast.success(registerData?.message, "Signup Successfully");
+      navigate("/")
   };
   if(registerError){
     console.log(registerError?.data?.message)
@@ -78,6 +80,7 @@ useEffect(()=>{
 
   if(isSuccess || data){
       toast.success(data?.message, "Login Successfully")
+      navigate("/")
   };
   if(error){
     toast.error(data?.data?.message || "Login failed")
