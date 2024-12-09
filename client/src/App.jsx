@@ -6,6 +6,8 @@ import HeroSecction from './pages/student/HeroSecction';
 import MainLayout from './layout/MainLayout';
 import Login from './pages/Auth';
 import Courses from './pages/student/Courses';
+import Mylearning from './pages/student/Mylearning';
+import Profile from './pages/student/Profile';
 const appRouter = createBrowserRouter([
   {
     path:"/",
@@ -23,7 +25,15 @@ const appRouter = createBrowserRouter([
       {
         path:"/login",
         element:<Login/>
-      }
+      },
+      {
+        path:"/mylearning",
+        element:<Mylearning/>
+      },
+      {
+        path:"/profile",
+        element:<Profile/>
+      },
     ]
   }
 ])

@@ -1,6 +1,6 @@
 import { Cloud, CreditCard, Edit2, Github, Keyboard, LayoutDashboard, LifeBuoy, LogOut, LucideFileWarning, Mail, Menu, MessageSquare, Plus, PlusCircle, School, Settings, User, UserPlus, Users } from 'lucide-react'
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -39,11 +39,11 @@ const user = true
         <DropdownMenuGroup>
           <DropdownMenuItem>
             <LucideFileWarning/>
-            <span>My learning</span>
+            <NavLink to="/mylearning">My learning</NavLink>
           </DropdownMenuItem>
           <DropdownMenuItem>
             <Edit2/>
-            <span>Edit Profile</span>
+            <NavLink to="/profile">Edit Profile</NavLink>
           </DropdownMenuItem>
             </DropdownMenuGroup>
             <DropdownMenuItem>
@@ -93,8 +93,8 @@ const MobileNavbar = () => {
         </SheetHeader>
         <Separator className='mr-2'/>
         <nav className='flex flex-col space-y-4 mb-5'>
-              <span>My learning</span>
-              <span>Edit Profile</span>
+              <NavLink to="/mylearning">My learning</NavLink>
+              <NavLink to="/profile">Edit Profile</NavLink>
               <span>Log Out</span>
         </nav>
          {
