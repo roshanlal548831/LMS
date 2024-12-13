@@ -8,7 +8,9 @@ export const authApi = createApi({
       reducerPath:"authApi",
       baseQuery:fetchBaseQuery({
        baseUrl:USER_API,
-       Credentials:"inclode" // isse error nahi ayega
+      credentials: "include",  // Ensures cookies are sent with requests
+
+
       }),
 
       endpoints:(builder) => ({
@@ -29,14 +31,6 @@ export const authApi = createApi({
            async onQueryStarted(_, {queryFulfilled,dispatch}){
               try {
                   const res = await queryFulfilled;
-                //   toast.succesrror.error.error){
-                    //       toast.error(error.error.error)                  
-                    //   }else{
-                    //       toast.error(error.error.data.message)                  
-
-                    // }s(res.data.message)
-                //   console.log(res.data)
-                  
                   dispatch(userLoggedin({user:res.data.user}))
              } catch (error) {
                 
@@ -44,10 +38,35 @@ export const authApi = createApi({
               }
            }
         }),
+        logoutUser: builder.mutation({
+            query:()=>({
+                url:"logout",
+                method:"GEt"
+            })
+        }),
+        loadUser:builder.query({
+            query:() => ({
+                url:"profile",
+                method:"GET"
+            })
+        }),
+
+        updateUser:builder.mutation({
+            query:(formData) => ({
+                url:"profile/update",
+                method:"PUT",
+                body:formData,
+                credentials:"include"
+            })
+        })
+
       })
 });
 
 export const {
     useRegisterUserMutation,
     useLoginUserMutation,
+    useLoadUserQuery,
+    useUpdateUserMutation,
+    useLogoutUserMutation
 } = authApi 

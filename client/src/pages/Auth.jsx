@@ -89,7 +89,7 @@ useEffect(()=>{
 
   return (
     <div className="flex items-center w-full justify-center mt-14">
-    <Tabs defaultValue="account" className="w-[400px]">
+    <Tabs defaultValue="login" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-2">
         <TabsTrigger value="singup">Signup</TabsTrigger>
         <TabsTrigger value="login">Login</TabsTrigger>
@@ -107,15 +107,15 @@ useEffect(()=>{
            <CardContent className="space-y-2">
             <div className="space-y-1">
               <Label className="float-left mb-3" htmlFor="name">Name</Label>
-              <Input type="text" name="name" value={signupInput.name} onChange={singupHndlechange} />
+              <Input type="text" name="name" id="name" value={signupInput.name} onChange={singupHndlechange} />
             </div>
             <div className="space-y-1">
               <Label className="float-left mb-3" htmlFor="email">email</Label>
-              <Input type="email" name="email" value={signupInput.email} onChange={singupHndlechange}  />
+              <Input type="email" name="email" id="email" value={signupInput.email} onChange={singupHndlechange}  />
             </div>
             <div className="space-y-1">
               <Label className="float-left mb-3" htmlFor="password">Password</Label>
-              <Input type="password" name="password" value={signupInput.password} onChange={singupHndlechange}  placeholder="*********" />
+              <Input type="password" name="password" id="password" value={signupInput.password} onChange={singupHndlechange}  placeholder="*********" />
             </div>
           </CardContent>
 

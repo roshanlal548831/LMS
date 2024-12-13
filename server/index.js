@@ -17,12 +17,13 @@ app.get("/",(req,res)=> {
 
 // middlewaew
 app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+// app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
+
 app.use(cors({
     origin: "http://localhost:5173",
-    Credentials: true,
-    methods:["GET","POST"]
+    credentials: true,
+    methods:["GET","POST","PUT"]
 }))
 
 

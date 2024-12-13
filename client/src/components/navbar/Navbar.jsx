@@ -1,6 +1,6 @@
 import { Cloud, CreditCard, Edit2, Github, Keyboard, LayoutDashboard, LifeBuoy, LogOut, LucideFileWarning, Mail, Menu, MessageSquare, Plus, PlusCircle, School, Settings, User, UserPlus, Users } from 'lucide-react'
-import React from 'react'
-import { Link, NavLink } from 'react-router-dom'
+import React, { useEffect } from 'react'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import { Button } from '../ui/button'
 import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuLabel, DropdownMenuPortal, DropdownMenuSeparator, DropdownMenuShortcut, DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger } from '../ui/dropdown-menu'
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
@@ -9,9 +9,28 @@ import { Sheet, SheetClose, SheetContent, SheetDescription, SheetFooter, SheetHe
 import { Label } from '../ui/label'
 import { Input } from '../ui/input'
 import { Separator } from '@radix-ui/react-dropdown-menu'
+import { useLogoutUserMutation } from '@/features/api/authApi'
+import { toast } from 'sonner'
 
 const Navbar = () => {
 const user = true
+
+
+const [logoutUser,{data,isSuccess}] = useLogoutUserMutation();
+const navigate = useNavigate()
+
+const role  = "instructor";
+const logoutHandler = async() => {
+  await logoutUser();
+};
+
+useEffect(()=>{
+  if(isSuccess){
+    navigate("/login")
+   toast.success(data.message || "User Log out.");
+  }
+},[isSuccess]);
+
 
 
   return (
@@ -52,7 +71,7 @@ const user = true
               </DropdownMenuItem>
               <DropdownMenuItem>
               <LogOut/>
-            <span>Log out</span>
+            <span onClick={logoutHandler}>Log out</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
@@ -79,7 +98,21 @@ const user = true
 export default Navbar
 
 const MobileNavbar = () => {
-  const role  = "instructor"
+
+  const [logoutUser,{data,isSuccess}] = useLogoutUserMutation();
+  const navigate = useNavigate()
+
+  const role  = "instructor";
+  const logoutHandler = async() => {
+    await logoutUser();
+  };
+
+  useEffect(()=>{
+    if(isSuccess){
+      navigate("/login")
+     toast.success(data.message || "User Log out.");
+    }
+ },[isSuccess]);
 
   return (
          <Sheet>
@@ -95,7 +128,7 @@ const MobileNavbar = () => {
         <nav className='flex flex-col space-y-4 mb-5'>
               <NavLink to="/mylearning">My learning</NavLink>
               <NavLink to="/profile">Edit Profile</NavLink>
-              <span>Log Out</span>
+              <span onClick={logoutHandler}>Log Out</span>
         </nav>
          {
             role === "instructor" && (
