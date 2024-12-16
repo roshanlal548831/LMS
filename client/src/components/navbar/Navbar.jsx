@@ -11,10 +11,13 @@ import { Input } from '../ui/input'
 import { Separator } from '@radix-ui/react-dropdown-menu'
 import { useLogoutUserMutation } from '@/features/api/authApi'
 import { toast } from 'sonner'
+import { useSelector } from 'react-redux'
 
 const Navbar = () => {
-const user = true
+// const user = true
 
+const {user} = useSelector(store => store.auth)
+console.log(user)
 
 const [logoutUser,{data,isSuccess}] = useLogoutUserMutation();
 const navigate = useNavigate()
@@ -31,7 +34,9 @@ useEffect(()=>{
   }
 },[isSuccess]);
 
-
+const loginnagigate = () => {
+  navigate("/login")
+}
 
   return (
     <div className='h-16 dark:bg-[#0A0A0A] bg-white border-b dark:border-gray-800 border-b-gray-200 fixed top-0 left-0 right-0 duration-300 z-10'>
@@ -48,7 +53,7 @@ useEffect(()=>{
         <DropdownMenu>
       <DropdownMenuTrigger asChild>
       <Avatar className="cursor-pointer">
-      <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+      <AvatarImage src={user?.photoUrl} alt="@shadcn" />
       <AvatarFallback>CN</AvatarFallback>
     </Avatar>
       </DropdownMenuTrigger>
@@ -65,10 +70,15 @@ useEffect(()=>{
             <NavLink to="/profile">Edit Profile</NavLink>
           </DropdownMenuItem>
             </DropdownMenuGroup>
-            <DropdownMenuItem>
-            <LayoutDashboard/>
-             <span>Dashbord</span>
-              </DropdownMenuItem>
+              {
+                user.role === "instructor" && (
+                <DropdownMenuItem>
+                  <LayoutDashboard/>
+                  <span>Dashbord</span>
+               </DropdownMenuItem>
+                )
+              }
+           
               <DropdownMenuItem>
               <LogOut/>
             <span onClick={logoutHandler}>Log out</span>
@@ -78,8 +88,8 @@ useEffect(()=>{
        ):
        (
         <div className='flex items-center gap-2'>
-           <Button variant="outline">Login</Button>
-           <Button>Signup</Button>
+           <Button onClick={loginnagigate} variant="outline" >Login</Button>
+           <Button onClick={loginnagigate}>Signup</Button>
         </div>
        )
         }
@@ -98,11 +108,11 @@ useEffect(()=>{
 export default Navbar
 
 const MobileNavbar = () => {
+  const {user} = useSelector(store => store.auth)
 
   const [logoutUser,{data,isSuccess}] = useLogoutUserMutation();
   const navigate = useNavigate()
 
-  const role  = "instructor";
   const logoutHandler = async() => {
     await logoutUser();
   };
@@ -126,12 +136,13 @@ const MobileNavbar = () => {
         </SheetHeader>
         <Separator className='mr-2'/>
         <nav className='flex flex-col space-y-4 mb-5'>
+              <NavLink to="/login">Login</NavLink>
               <NavLink to="/mylearning">My learning</NavLink>
               <NavLink to="/profile">Edit Profile</NavLink>
               <span onClick={logoutHandler}>Log Out</span>
         </nav>
          {
-            role === "instructor" && (
+            user?.role === "instructor" && (
             <SheetFooter>
              <SheetClose asChild>
             <Button type="submit">DashBord</Button>

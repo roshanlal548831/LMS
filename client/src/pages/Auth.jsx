@@ -83,7 +83,7 @@ useEffect(()=>{
       navigate("/")
   };
   if(error){
-    toast.error(data?.data?.message || "Login failed")
+    toast.error(error?.data?.message || "Login failed")
 };
 },[isLoading,error,data,registerData,registerError,registerLoading])
 
