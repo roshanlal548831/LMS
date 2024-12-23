@@ -1,6 +1,5 @@
 import {createApi, fetchBaseQuery} from "@reduxjs/toolkit/query/react";
 import { userLoggedin, userLoggedOut } from "../authSlice";
-import { toast } from "sonner";
 
 const USER_API = "http://localhost:8000/api/v1/user/";
 
@@ -31,6 +30,7 @@ export const authApi = createApi({
            async onQueryStarted(_, {queryFulfilled,dispatch}){
               try {
                   const res = await queryFulfilled;
+                //   console.log("this is data => ",res.data)
                   dispatch(userLoggedin({user:res.data.user}))
              } catch (error) {
                 
@@ -41,7 +41,7 @@ export const authApi = createApi({
         logoutUser: builder.mutation({
             query:()=>({
                 url:"logout",
-                method:"GEt"
+                method:"GET"
             }),
             async onQueryStarted(_, {queryFulfilled,dispatch}){
                 try {

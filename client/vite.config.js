@@ -5,14 +5,14 @@ import { defineConfig } from "vite"
 export default defineConfig({
   server: {
     host: '0.0.0.0', 
-    proxy: {
-      '/api': {
-        target: 'https://jobportal-1-hj3h.onrender.com', // Backend server URL
-        changeOrigin: true,
-        secure: false,
-        rewrite: (path) => path.replace(/^\/api/, 'api'),
-      },
-    },
+    // proxy: {
+    //   '/api': {
+    //     // target: 'https://jobportal-1-hj3h.onrender.com', // Backend server URL
+    //     changeOrigin: true,
+    //     secure: false,
+    //     rewrite: (path) => path.replace(/^\/api/, 'api'),
+    //   },
+    // },
   },
   plugins: [react()],
   resolve: {

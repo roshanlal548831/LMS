@@ -2,15 +2,16 @@ import {Course } from "../models/course.model.js";
 
 export const createCourse = async(req,res)=> {
          try {
-            const {coursTitle,category} = req.body;
-            if(!coursTitle || !category){
+            const {courseTitle,category} = req.body;
+            console.log(courseTitle,category)
+            if(!courseTitle || !category){
                 return res.status(400).json({
-                    message:"Course title and is required."
+                    message:"Course title and is category required."
                 })
             };
 
             const course = await Course.create({
-                coursTitle,
+                courseTitle,
                 category,
                 creator:req.id
             })
@@ -26,5 +27,28 @@ export const createCourse = async(req,res)=> {
                 message:"Failed to create course"
             })
             
-         }
+  }
+};
+
+export const getAllCreatorCourses = async(req,res) => {
+          try {
+            const userId = req.id;
+            const courses = await Course.find({creator:userId}).sort({updatedAt: -1});
+            console.log(courses)
+            if(!courses){
+                return res.status(404).json({
+                    courses:[],
+                    message:"Course not found."
+                });
+            }
+
+            return res.status(200).json({
+                courses,
+            })
+          } catch (error) {
+            console.log(error)
+            return res.status(500).json({
+                message:"Failed course"
+            })
+          }
 }
