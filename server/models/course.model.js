@@ -24,8 +24,8 @@ const coursSchema = new Schema({
         type:Number,
         
     },
-    courseThubtnail:{
-        type:Number,
+    courseThumbnail:{
+        type:String,
         
     },
     enrolledStudents:[
