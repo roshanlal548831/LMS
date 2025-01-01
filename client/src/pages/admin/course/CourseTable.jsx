@@ -14,12 +14,6 @@ const CourseTable = () => {
 
   const course = data?.courses || [];
 
-  useEffect(()=>{
-    if(isSuccess){
-      // refetch()
-    }
-  },[])
-
   if(isLoading) return <h1>Loading...</h1>
 
   return (
@@ -39,7 +33,7 @@ const CourseTable = () => {
   {
       course.map((course,i)=> (
        <TableRow key={i}>
-      <TableCell className="font-medium">{course?.price || "NA"}</TableCell>
+      <TableCell className="font-medium">{course?.coursePrice || "NA"}</TableCell>
       <TableCell className="font-medium" ><Badge>{course?.isPublist ? "Published" : "Draft"}</Badge></TableCell>
       <TableCell className="">{course?.courseTitle}</TableCell>
       <TableCell className="text-right">

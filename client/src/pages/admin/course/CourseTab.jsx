@@ -1,10 +1,11 @@
+import Skeletom from '@/components/mode/Skeletom'
 import RichTextEditor from '@/components/RichTextEditor'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useEditCourseMutation } from '@/features/api/courseApi'
+import { useEditCourseMutation, useGetCourseByIdQuery } from '@/features/api/courseApi'
 import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
 import { useNavigate, useParams } from 'react-router-dom'
@@ -15,7 +16,7 @@ const CourseTab = () => {
     // const isLoading = false;
     const navigate = useNavigate()
     const [editCourse,{data,isLoading,isSuccess,error}] = useEditCourseMutation();
-
+    
     const[input,setInput] = useState({
       courseTitle:"",
       subTitle:"",
@@ -25,13 +26,29 @@ const CourseTab = () => {
       coursePrice:"",
       courseThumbnail:""
     });
-
+    
     const params = useParams();
-    const courseId = params.createId
-    ;
+    const courseId = params.createId;
 
+    const {data:courseByIdData,isLoading:courseByIdLoading} = useGetCourseByIdQuery(courseId,{refetchOnMountOrArgChange:true});
     const [previewThumbnail,setPreviewThumbnail] = useState("");
 
+  //  console.log(course)
+    useEffect(()=>{
+    if(courseByIdData?.course){
+      const course = courseByIdData?.course;
+      setInput({
+        courseTitle:course?.courseTitle,
+        subTitle:course?.subTitle,
+        description:course?.description,
+        category:course?.category,
+        courseLevel:course?.courseLevel,
+        coursePrice:course?.coursePrice,
+      });
+      // console.log(course?.courseThumbnail)
+      setPreviewThumbnail(course?.courseThumbnail)
+    }
+    },[courseByIdData])
     const changeEventHandler = (e) => {
       const {name,value} = e.target;
       setInput({...input,[name]:value});
@@ -76,7 +93,10 @@ useEffect(()=>{
    if(error){
     toast.error(error?.data?.message || "Failed to update course")
    };
-},[isSuccess])
+},[isSuccess]);
+
+if(courseByIdLoading) return <Skeletom/>
+
   return (
     <Card>
        <CardHeader className="flex flex-row justify-between">
@@ -170,7 +190,7 @@ useEffect(()=>{
                   className="w-fit"
                   />
                   {
-                    previewThumbnail && <img src={previewThumbnail} alt="thumnail" className='w-64 my-2'/>
+                    previewThumbnail && <img src={previewThumbnail} alt="thumnail" className='w-1/2 my-2'/>
                   }
                  </div> 
                  <div>
