@@ -13,63 +13,63 @@ import Dashbord from './pages/admin/Dashbord';
 import CourseTable from './pages/admin/course/CourseTable';
 import AddCourse from './pages/admin/course/AddCourse';
 import EditCourse from './pages/admin/course/EditCourse';
-import Createlecture from './pages/admin/lecture/createlecture';
+import Createlecture from './pages/admin/lecture/Createlecture';
 const appRouter = createBrowserRouter([
   {
-    path:"/",
-    element:<MainLayout/>,
-    children:[
+    path: "/",
+    element: <MainLayout />,
+    children: [
       {
-        path:"",
-        element:(
-        <>
-        <HeroSecction/>
-         <Courses/>
-        </>
+        path: "",
+        element: (
+          <>
+            <HeroSecction />
+            <Courses />
+          </>
         ),
       },
       {
-        path:"/login",
-        element:<Login/>
+        path: "/login",
+        element: <Login />
       },
       {
-        path:"/mylearning",
-        element:<Mylearning/>
+        path: "/mylearning",
+        element: <Mylearning />
       },
       {
-        path:"/profile",
-        element:<Profile/>
+        path: "/profile",
+        element: <Profile />
       },
       // admin route start here
       {
-        path:"/admin",
-        element:<Sidebar/>,  
-        children:[
+        path: "/admin",
+        element: <Sidebar />,
+        children: [
           {
-            path:"dashboard",
-            element:<Dashbord/>
+            path: "dashboard",
+            element: <Dashbord />
           },
           {
-            path:"course",
-            element:<CourseTable/>
+            path: "course",
+            element: <CourseTable />
           },
           {
-            path:"course/create",
-            element:<AddCourse/>
+            path: "course/create",
+            element: <AddCourse />
           },
           {
-            path:"course/:createId",
-            element:<EditCourse/>
+            path: "course/:createId",
+            element: <EditCourse />
           },
           {
-            path:"course/:createId/lecture",
-            element:<Createlecture/>
+            path: "course/:createId/lecture",
+            element: <Createlecture />
           },
         ]
       },
-      
+
     ],
-    
+
   }
 ])
 
@@ -77,7 +77,7 @@ function App() {
 
   return (
     <main>
-       <RouterProvider router={appRouter}/>
+      <RouterProvider router={appRouter} />
     </main>
   )
 }
