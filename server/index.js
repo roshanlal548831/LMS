@@ -7,6 +7,8 @@ import cookieParser from 'cookie-parser';
 
 import userRoute from './routes/user.route.js';
 import courseRoute from './routes/course.router.js';
+import mediaRoute from './routes/course.router.js';
+
 
 
 import cors from "cors"
@@ -16,7 +18,7 @@ const port = process.env.PORT || 3000;
 // call database connection
 connectDb();
 
-app.get("/",(req,res)=> {
+app.get("/", (req, res) => {
     res.send("serer run success fully")
 });
 
@@ -28,14 +30,16 @@ app.use(cookieParser());
 app.use(cors({
     origin: "http://localhost:5173",
     credentials: true,
-    methods:["GET","POST","PUT"]
+    methods: ["GET", "POST", "PUT"]
 }))
 
 
 // api
-app.use("/api/v1/user",userRoute)
-app.use("/api/v1/course",courseRoute)
+app.use("/api/v1/media", mediaRoute)
+app.use("/api/v1/user", userRoute)
+app.use("/api/v1/course", courseRoute)
 
-app.listen(port,()=>{
+
+app.listen(port, () => {
     console.log(`server run http://localhost:${port}`)
 })
