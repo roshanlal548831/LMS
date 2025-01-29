@@ -7,7 +7,7 @@ import cookieParser from 'cookie-parser';
 
 import userRoute from './routes/user.route.js';
 import courseRoute from './routes/course.router.js';
-import mediaRoute from './routes/course.router.js';
+import mediaRoute from './routes/media.route.js';
 
 
 
