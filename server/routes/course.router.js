@@ -1,17 +1,22 @@
 import express from "express";
 import isAuthenticated from "../middleware/isAuthenticated.js";
-import { createCourse, createLecture, editCourse, getAllCreatorCourses, getCourseById, getCourseLecture } from "../controllers/cours.controller.js";
+import { createCourse, createLecture, editCourse, editLecture, getAllCreatorCourses, getCourseById, getCourseLecture, getLectureById, removeLecture } from "../controllers/cours.controller.js";
 import { upload } from "../middleware/multer.js";
-const route = express.Router();
+const router = express.Router();
 
-route.route("/").post(isAuthenticated,createCourse);
-route.route("/").get(isAuthenticated,getAllCreatorCourses);
-route.route("/:courseId").put(isAuthenticated,upload.single("courseThumbnail"),editCourse);
-route.route("/:courseId").get(isAuthenticated,getCourseById);
-route.route("/:courseId/lecture").post(isAuthenticated,createLecture);
-route.route("/:courseId/lecture").get(isAuthenticated,getCourseLecture);
+router.route("/").post(isAuthenticated, createCourse);
+router.route("/").get(isAuthenticated, getAllCreatorCourses);
+router.route("/:courseId").put(isAuthenticated, upload.single("courseThumbnail"), editCourse);
+router.route("/:courseId").get(isAuthenticated, getCourseById);
+router.route("/:courseId/lecture").post(isAuthenticated, createLecture);
+router.route("/:courseId/lecture").get(isAuthenticated, getCourseLecture);
+router.route("/:courseId/lecture/:lectureId").post(isAuthenticated, editLecture);
+router.route("/lecture/:lectureId").delete(isAuthenticated, removeLecture);
+router.route("/lecture/:lectureId").get(isAuthenticated, getLectureById);
 
 
 
 
-export default route;
+
+
+export default router;

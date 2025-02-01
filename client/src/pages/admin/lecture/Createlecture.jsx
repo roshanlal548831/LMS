@@ -20,7 +20,7 @@ const createlecture = () => {
     isSuccess: lectureIsSuccess,
     error: lectureError,
     isLoading: lectureIsLoading,
-    refetch
+    // refetch
   } = useGetCourseLectureQuery({ courseId: params.createId }, { refetchOnMountOrArgChange: true });
 
 
@@ -31,7 +31,7 @@ const createlecture = () => {
   useEffect(() => {
     if (isSuccess) {
       toast.success(data.message);
-      refetch();
+      // refetch();
     };
     if (error) {
       toast.error(error.data.message)
