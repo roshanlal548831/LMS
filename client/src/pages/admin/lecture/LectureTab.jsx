@@ -4,7 +4,7 @@ import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Progress } from '@/components/ui/progress'
 import { Switch } from '@/components/ui/switch'
-import { useEditLectureMutation, useRemoveLectureMutation } from '@/features/api/courseApi'
+import { useEditLectureMutation, useGetLectureByIdQuery, useRemoveLectureMutation } from '@/features/api/courseApi'
 import axios from 'axios'
 import { Loader2 } from 'lucide-react'
 import React, { useEffect, useState } from 'react'
@@ -22,13 +22,27 @@ const LectureTab = () => {
     const [btnDisable, setBtnDisable] = useState(true);
     const [loading, setLoading] = useState(false);
     const navigate = useNavigate();
+    const [url, setUrl] = useState("")
+
 
     const { createId, lectureId } = useParams()
+
+    const { data: lectureData, } = useGetLectureByIdQuery(lectureId)
+    const lecture = lectureData?.lecture;
+
+    useEffect(() => {
+        if (lecture) {
+            setTitle(lecture.lectureTitle);
+            setIsFree(lecture.isPreviewFree);
+            setUrl(lecture.videoUrl)
+
+        }
+    }, [lecture])
 
     const [editLecture, { data, isLoading, error, isSuccess }] = useEditLectureMutation();
 
 
-    console.log(uploadVideoInfo)
+    console.log("this is lecture Data", lectureData)
     const fileChangeHandler = async (e) => {
         const file = e.target.files[0];
         if (file) {
@@ -120,6 +134,20 @@ const LectureTab = () => {
                     <Label>Video <span className='text-red-500'>*</span></Label>
                     <Input type="file" accept="video/*" onChange={fileChangeHandler} className="w-fit" />
                 </div>
+                {
+                    lecture?.videoUrl && (
+                        <div>
+                            <iframe
+                                className="w-1/2 h-1/2 sm:h-96 rounded-lg"
+                                src={url}
+                                title="Video Player"
+                                frameBorder="0"
+                                allowFullScreen
+                            ></iframe>
+                        </div>
+                    )
+                }
+
                 <div className="flex items-center space-x-2 my-5">
                     <Switch checked={isFree} onCheckedChange={setIsFree} id="airplane-mode" />
                     <Label htmlFor="airplane-mode">Is this video FREE</Label>
