@@ -36,7 +36,6 @@ export const getAllCreatorCourses = async (req, res) => {
     try {
         const userId = req.id;
         const courses = await Course.find({ creator: userId }).sort({ updatedAt: -1 });
-        console.log(courses)
         if (!courses) {
             return res.status(404).json({
                 courses: [],
@@ -259,6 +258,35 @@ export const getLectureById = async (req, res) => {
     } catch (error) {
         return res.status(500).json({
             message: "Failed to get lectur!"
+        })
+    }
+};
+
+// publich unpublish course logic
+
+export const togglePublishCourse = async (req, res) => {
+    try {
+        const { courseId } = req.params;
+        const { publish } = req.query; // true or false
+        console.log(publish, courseId)
+        const course = await Course.findById(courseId);
+        if (!course) {
+            return res.status(404).json({
+                message: "Course not found!",
+                success: false
+            })
+        }
+        // publish status  based on the queray paramters
+        course.isPublist = publish === "true";
+        const statusmessage = course.isPublist ? "Published" : "Unpublished"
+        await course.save();
+        return res.status(200).json({
+            message: `Course is ${statusmessage}`,
+            success: true
+        })
+    } catch (error) {
+        return res.status(500).json({
+            message: "Failed to update status!"
         })
     }
 }

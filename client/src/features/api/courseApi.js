@@ -4,7 +4,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 const COURSE_API = "http://localhost:8000/api/v1/course/";
 
 export const courseApi = createApi({
-    tagTypes: ["Refetch_Creator_Course", "Refetch_Lecture"],
+    tagTypes: ["Refetch_Creator_Course", "Refetch_Lecture", "Refetch_Status"],
     baseQuery: fetchBaseQuery({
         baseUrl: COURSE_API,
         credentials: "include",  // Ensures cookies are sent with requests
@@ -28,7 +28,7 @@ export const courseApi = createApi({
                 url: "",
                 method: "GET",
             }),
-            providesTags: ["Refetch_Creator_Course"],
+            providesTags: ["Refetch_Creator_Course",],
         }),
         editCourse: builder.mutation({
             query: ({ formData, courseId }) => ({
@@ -36,14 +36,14 @@ export const courseApi = createApi({
                 method: "PUT",
                 body: formData
             }),
-            invalidatesTags: ["Refetch_Creator_Course"]
+            invalidatesTags: ["Refetch_Creator_Course",]
         }),
         getCourseById: builder.query({
             query: (courseId) => ({
                 url: `${courseId}`,
                 method: "GET",
 
-            })
+            }),
         }),
         getCourseById: builder.query({
             query: (courseId) => ({
@@ -89,6 +89,13 @@ export const courseApi = createApi({
                 url: `/lecture/${lectureId}`,
                 method: "GET",
             }),
+        }),
+        publishCourse: builder.mutation({
+            query: ({ courseId, query }) => ({
+                url: `/${courseId}?publish=${query}`,
+                method: "PATCH"
+            }),
+
         })
     }),
 
@@ -103,5 +110,6 @@ export const {
     useGetCourseLectureQuery,
     useEditLectureMutation,
     useRemoveLectureMutation,
-    useGetLectureByIdQuery
+    useGetLectureByIdQuery,
+    usePublishCourseMutation
 } = courseApi;

@@ -27,7 +27,7 @@ const LectureTab = () => {
 
     const { createId, lectureId } = useParams()
 
-    const { data: lectureData, } = useGetLectureByIdQuery(lectureId)
+    const { data: lectureData, refetch } = useGetLectureByIdQuery(lectureId)
     const lecture = lectureData?.lecture;
 
     useEffect(() => {
@@ -37,7 +37,8 @@ const LectureTab = () => {
             setUrl(lecture.videoUrl)
 
         }
-    }, [lecture])
+        refetch()
+    }, [])
 
     const [editLecture, { data, isLoading, error, isSuccess }] = useEditLectureMutation();
 
