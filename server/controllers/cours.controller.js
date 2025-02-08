@@ -32,6 +32,29 @@ export const createCourse = async (req, res) => {
     }
 };
 
+export const getPublishedCourse = async (_, res) => {
+    try {
+        const courses = await Course.find({ isPublist: true }).populate({
+            path: "creator", select: "name photoUrl"
+        })
+        if (!courses) {
+            return res.status(404).json({
+                message: "Course not found!",
+                success: false
+            })
+        }
+        return res.status(200).json({
+            courses,
+            success: true
+        })
+    } catch (error) {
+        console.log(error)
+        return res.status(500).json({
+            message: "Failed to get Published courses!"
+        })
+    }
+}
+
 export const getAllCreatorCourses = async (req, res) => {
     try {
         const userId = req.id;
@@ -69,8 +92,8 @@ export const editCourse = async (req, res) => {
 
         let courseThumbnail;
         if (thumbnail) {
-            if (course.courseThubtnail) {
-                const publicId = course.courseThubtnail.split("/").pop().split(".")[0];
+            if (course.courseThumbnail) {
+                const publicId = course.courseThumbnail.split("/").pop().split(".")[0];
                 await deleteMediaFromCloudinary(publicId); // delete old image;
             };
             // upload thubmnail on cloudinary

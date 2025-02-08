@@ -29,11 +29,11 @@ const CourseTab = () => {
   const params = useParams();
   const courseId = params.createId;
 
-  const { data: courseByIdData, isLoading: courseByIdLoading, refetch } = useGetCourseByIdQuery(courseId);
+  const { data: courseByIdData, isLoading: courseByIdLoading } = useGetCourseByIdQuery(courseId);
   const [previewThumbnail, setPreviewThumbnail] = useState("");
   const [publishCourse, { isLoading: statusLoading }] = usePublishCourseMutation();
 
-  //  console.log(course)
+  console.log(courseByIdData?.course.lectures)
   useEffect(() => {
     if (courseByIdData?.course) {
       const course = courseByIdData?.course;
@@ -91,7 +91,7 @@ const CourseTab = () => {
     try {
       const res = await publishCourse({ courseId, query: action });
       if (res.data) {
-        refetch();
+        // refetch();
         toast.success(res.data.message);
       }
     } catch (error) {
@@ -120,7 +120,7 @@ const CourseTab = () => {
           </CardDescription>
         </div>
         <div className='space-x-2 gap-2'>
-          <Button variant="outline" disabled={statusLoading} onClick={() => publishStatusHandler(courseByIdData?.course.isPublist ? "false" : "true")}>
+          <Button variant="outline" disabled={courseByIdData?.course.lectures.length === 0 || statusLoading} onClick={() => publishStatusHandler(courseByIdData?.course.isPublist ? "false" : "true")}>
             {statusLoading ? (
               <>
                 <Loader2 className="animate-spin w-4 h-4" /> Please wait...
